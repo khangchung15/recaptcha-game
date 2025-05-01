@@ -75,27 +75,30 @@ function shuffleArray(array) {
 }
 
 function App() {
-  const [challenges] = useState(() => shuffleArray([
-    {
-      type: "text",
-      prompt: "Type the word 'recaptcha' backwards.",
-      answer: "ahctpacer",
-    },
-    {
-      type: "text",
-      prompt: "Solve for x: 2(x + 3) - 5 = 3(x - 1) + 4",
-      answer: "0",
-    },
-    {
-      type: "text",
-      prompt: "What is the square root of 144?",
-      answer: "12",
-    },
-    ...imageGridChallenges.map(challenge => ({
-      type: "imageGrid",
-      challenge: challenge
-    }))
-  ]));
+  const [challenges] = useState(() => {
+    const initialChallenges = [
+      {
+        type: "text",
+        prompt: "Type the word 'recaptcha' backwards.",
+        answer: "ahctpacer",
+      },
+      {
+        type: "text",
+        prompt: "Solve for x: 2(x + 3) - 5 = 3(x - 1) + 4",
+        answer: "0",
+      },
+      {
+        type: "text",
+        prompt: "What is the square root of 144?",
+        answer: "12",
+      },
+      ...imageGridChallenges.map(challenge => ({
+        type: "imageGrid",
+        challenge: challenge
+      }))
+    ];
+    return shuffleArray(initialChallenges);
+  });
   
   const [step, setStep] = useState(0);
   const [input, setInput] = useState("");
@@ -110,6 +113,10 @@ function App() {
     if (!current) return;
     
     if (current.type === "imageGrid" && !currentGridChallenge) {
+      if (!current.challenge) {
+        console.error('Image grid challenge data is missing');
+        return;
+      }
       setCurrentGridChallenge(current.challenge);
     }
   }, [current, currentGridChallenge]);
@@ -118,21 +125,16 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Current input:', input);
-    console.log('Current answer:', current.answer);
-    
     if (!current || !current.answer) {
       console.error('No current challenge or answer found');
+      setError("An error occurred. Please refresh the page.");
       return;
     }
 
     const userAnswer = input.trim().toLowerCase();
     const correctAnswer = current.answer.toLowerCase();
     
-    console.log('Comparing:', userAnswer, 'with', correctAnswer);
-    
     if (userAnswer === correctAnswer) {
-      console.log('Answer correct!');
       setError("");
       setInput("");
       setCompletedChallenges(prev => {
@@ -148,7 +150,6 @@ function App() {
         setStep(nextStep);
       }
     } else {
-      console.log('Answer incorrect');
       setError("Try again! That's not correct.");
     }
   };
@@ -174,7 +175,7 @@ function App() {
     <div style={{ textAlign: "center", marginTop: "2rem", fontSize: "1.2rem" }}>
       <h1 style={{ fontSize: "2.5rem", marginBottom: "2rem" }}>reCAPTCHA Game</h1>
       {current.type === "imageGrid" ? (
-        currentGridChallenge && (
+        currentGridChallenge && currentGridChallenge.prompt && currentGridChallenge.image ? (
           <>
             <p style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>{currentGridChallenge.prompt}</p>
             <ImageGridChallenge 
@@ -197,6 +198,8 @@ function App() {
               image={currentGridChallenge.image}
             />
           </>
+        ) : (
+          <p style={{ color: "red" }}>Error loading image challenge. Please refresh the page.</p>
         )
       ) : (
         <>
