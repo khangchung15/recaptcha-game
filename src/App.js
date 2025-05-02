@@ -38,7 +38,7 @@ const imageGridChallenges = [
     correctIndexes: [0, 1, 2, 3],
   },
   {
-    prompt: "Click all squares that contains a stick that is about to hit the cameraman",
+    prompt: "Click all squares that contains a stick about to hit the cameraman",
     image: smilingman,
     correctIndexes: [0, 1, 2],
   },
@@ -106,41 +106,21 @@ function App() {
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
   const [completedChallenges, setCompletedChallenges] = useState(new Set());
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const current = challenges[step];
 
-  const handleInput = (e) => setInput(e.target.value);
-
-  const handleChallengeComplete = () => {
-    if (isTransitioning) return;
-    
-    setIsTransitioning(true);
-    try {
-      setCompletedChallenges(prev => {
-        const newSet = new Set(prev);
-        newSet.add(step);
-        return newSet;
-      });
-      
-      const nextStep = step + 1;
-      if (nextStep >= challenges.length) {
-        setStep(challenges.length);
-      } else {
-        setStep(nextStep);
-      }
-    } catch (error) {
-      console.error('Error in challenge completion:', error);
-    } finally {
-      setIsTransitioning(false);
+  const nextChallenge = () => {
+    const nextStep = step + 1;
+    if (nextStep >= challenges.length) {
+      setStep(challenges.length);
+    } else {
+      setStep(nextStep);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!current || !current.answer || isTransitioning) {
-      return;
-    }
+    if (!current || !current.answer) return;
 
     const userAnswer = input.trim().toLowerCase();
     const correctAnswer = current.answer.toLowerCase();
@@ -148,7 +128,12 @@ function App() {
     if (userAnswer === correctAnswer) {
       setError("");
       setInput("");
-      handleChallengeComplete();
+      setCompletedChallenges(prev => {
+        const newSet = new Set(prev);
+        newSet.add(step);
+        return newSet;
+      });
+      nextChallenge();
     } else {
       setError("Try again! That's not correct.");
     }
@@ -178,7 +163,14 @@ function App() {
         <>
           <p style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>{current.prompt}</p>
           <ImageGridChallenge 
-            onSuccess={handleChallengeComplete}
+            onSuccess={() => {
+              setCompletedChallenges(prev => {
+                const newSet = new Set(prev);
+                newSet.add(step);
+                return newSet;
+              });
+              nextChallenge();
+            }}
             correctIndexes={current.correctIndexes}
             image={current.image}
           />
@@ -203,7 +195,6 @@ function App() {
                 fontSize: "1.2rem",
                 padding: "0.5rem 1rem"
               }}
-              disabled={isTransitioning}
             >
               Submit
             </button>
