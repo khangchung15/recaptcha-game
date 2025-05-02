@@ -106,25 +106,17 @@ function App() {
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
   const [completedChallenges, setCompletedChallenges] = useState(new Set());
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const current = challenges[step];
 
   const handleInput = (e) => setInput(e.target.value);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!current || !current.answer) {
-      console.error('No current challenge or answer found');
-      setError("An error occurred. Please refresh the page.");
-      return;
-    }
-
-    const userAnswer = input.trim().toLowerCase();
-    const correctAnswer = current.answer.toLowerCase();
+  const handleChallengeComplete = () => {
+    if (isTransitioning) return;
     
-    if (userAnswer === correctAnswer) {
-      setError("");
-      setInput("");
+    setIsTransitioning(true);
+    try {
       setCompletedChallenges(prev => {
         const newSet = new Set(prev);
         newSet.add(step);
@@ -137,6 +129,26 @@ function App() {
       } else {
         setStep(nextStep);
       }
+    } catch (error) {
+      console.error('Error in challenge completion:', error);
+    } finally {
+      setIsTransitioning(false);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!current || !current.answer || isTransitioning) {
+      return;
+    }
+
+    const userAnswer = input.trim().toLowerCase();
+    const correctAnswer = current.answer.toLowerCase();
+    
+    if (userAnswer === correctAnswer) {
+      setError("");
+      setInput("");
+      handleChallengeComplete();
     } else {
       setError("Try again! That's not correct.");
     }
@@ -166,23 +178,7 @@ function App() {
         <>
           <p style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>{current.prompt}</p>
           <ImageGridChallenge 
-            onSuccess={() => {
-              try {
-                setCompletedChallenges(prev => {
-                  const newSet = new Set(prev);
-                  newSet.add(step);
-                  return newSet;
-                });
-                const nextStep = step + 1;
-                if (nextStep >= challenges.length) {
-                  setStep(challenges.length);
-                } else {
-                  setStep(nextStep);
-                }
-              } catch (error) {
-                console.error('Error in onSuccess handler:', error);
-              }
-            }} 
+            onSuccess={handleChallengeComplete}
             correctIndexes={current.correctIndexes}
             image={current.image}
           />
@@ -207,6 +203,7 @@ function App() {
                 fontSize: "1.2rem",
                 padding: "0.5rem 1rem"
               }}
+              disabled={isTransitioning}
             >
               Submit
             </button>

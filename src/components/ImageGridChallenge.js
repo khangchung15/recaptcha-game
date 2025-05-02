@@ -1,27 +1,44 @@
 // src/components/ImageGridChallenge.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import skyscraper from "../assets/skyscraper.jpg";
 
 const gridSize = 3; // 3x3 grid
 
 export default function ImageGridChallenge({ onSuccess, correctIndexes, image }) {
   const [selected, setSelected] = useState(Array(gridSize * gridSize).fill(false));
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      // Cleanup when component unmounts
+      setIsSubmitting(false);
+    };
+  }, []);
 
   const handleClick = (idx) => {
+    if (isSubmitting) return;
     setSelected((prev) =>
       prev.map((val, i) => (i === idx ? !val : val))
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Check if all correct indexes are selected and no incorrect ones are selected
-    const isCorrect = selected.every((isSelected, idx) => 
-      isSelected === correctIndexes.includes(idx)
-    );
+  const handleSubmit = () => {
+    if (isSubmitting) return;
     
-    if (isCorrect && typeof onSuccess === 'function') {
-      onSuccess();
+    setIsSubmitting(true);
+    try {
+      // Check if all correct indexes are selected and no incorrect ones are selected
+      const isCorrect = selected.every((isSelected, idx) => 
+        isSelected === correctIndexes.includes(idx)
+      );
+      
+      if (isCorrect && typeof onSuccess === 'function') {
+        onSuccess();
+      }
+    } catch (error) {
+      console.error('Error in handleSubmit:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -37,6 +54,7 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
           key={idx}
           type="button"
           onClick={() => handleClick(idx)}
+          disabled={isSubmitting}
           style={{
             width: 150,
             height: 150,
@@ -47,8 +65,9 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
             backgroundRepeat: "no-repeat",
             padding: 0,
             margin: 0,
-            cursor: "pointer",
+            cursor: isSubmitting ? "not-allowed" : "pointer",
             boxSizing: "border-box",
+            opacity: isSubmitting ? 0.7 : 1,
           }}
         />
       );
@@ -56,7 +75,7 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <div
         style={{
           display: "grid",
@@ -68,8 +87,18 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
         {cells}
       </div>
       <div style={{ marginTop: 16 }}>
-        <button type="submit">Submit</button>
+        <button 
+          type="button"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          style={{
+            opacity: isSubmitting ? 0.7 : 1,
+            cursor: isSubmitting ? "not-allowed" : "pointer",
+          }}
+        >
+          Submit
+        </button>
       </div>
-    </form>
+    </div>
   );
 }
