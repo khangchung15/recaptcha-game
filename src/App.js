@@ -111,6 +111,8 @@ function App() {
 
   const current = challenges[step];
 
+  const handleInput = (e) => setInput(e.target.value);
+
   const nextChallenge = () => {
     const nextStep = step + 1;
     console.log('Moving to step:', nextStep, 'out of', challenges.length);
