@@ -97,7 +97,7 @@ function App() {
         prompt: challenge.prompt,
         image: challenge.image,
         correctIndexes: challenge.correctIndexes,
-        id: `grid-${index}` // Add unique ID for each grid challenge
+        id: `grid-${index}`
       }))
     ];
     console.log('Total challenges:', initialChallenges.length);
@@ -108,6 +108,37 @@ function App() {
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
   const [completedChallenges, setCompletedChallenges] = useState(new Set());
+  const [loadedImages, setLoadedImages] = useState(new Set());
+
+  // Preload all images
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = imageGridChallenges.map(challenge => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = challenge.image;
+          img.onload = () => {
+            setLoadedImages(prev => {
+              const newSet = new Set(prev);
+              newSet.add(challenge.image);
+              return newSet;
+            });
+            resolve();
+          };
+          img.onerror = reject;
+        });
+      });
+
+      try {
+        await Promise.all(imagePromises);
+        console.log('All images preloaded');
+      } catch (error) {
+        console.error('Error preloading images:', error);
+      }
+    };
+
+    preloadImages();
+  }, []);
 
   const current = challenges[step];
 
@@ -173,19 +204,33 @@ function App() {
       {current.type === "imageGrid" ? (
         <>
           <p style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>{current.prompt}</p>
-          <ImageGridChallenge 
-            key={current.id} // Add key to force remount on challenge change
-            onSuccess={() => {
-              setCompletedChallenges(prev => {
-                const newSet = new Set(prev);
-                newSet.add(step);
-                return newSet;
-              });
-              nextChallenge();
-            }}
-            correctIndexes={current.correctIndexes}
-            image={current.image}
-          />
+          {loadedImages.has(current.image) ? (
+            <ImageGridChallenge 
+              key={current.id}
+              onSuccess={() => {
+                setCompletedChallenges(prev => {
+                  const newSet = new Set(prev);
+                  newSet.add(step);
+                  return newSet;
+                });
+                nextChallenge();
+              }}
+              correctIndexes={current.correctIndexes}
+              image={current.image}
+            />
+          ) : (
+            <div style={{ 
+              width: '450px', 
+              height: '450px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              border: '1px solid #ccc',
+              margin: '0 auto'
+            }}>
+              <p>Loading image...</p>
+            </div>
+          )}
         </>
       ) : (
         <>
