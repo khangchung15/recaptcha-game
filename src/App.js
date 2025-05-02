@@ -94,7 +94,9 @@ function App() {
       },
       ...imageGridChallenges.map(challenge => ({
         type: "imageGrid",
-        challenge: challenge
+        prompt: challenge.prompt,
+        image: challenge.image,
+        correctIndexes: challenge.correctIndexes
       }))
     ];
     return shuffleArray(initialChallenges);
@@ -103,23 +105,9 @@ function App() {
   const [step, setStep] = useState(0);
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
-  const [currentGridChallenge, setCurrentGridChallenge] = useState(null);
-  const [usedGridChallenges, setUsedGridChallenges] = useState([]);
   const [completedChallenges, setCompletedChallenges] = useState(new Set());
 
   const current = challenges[step];
-
-  useEffect(() => {
-    if (!current) return;
-    
-    if (current.type === "imageGrid" && !currentGridChallenge) {
-      if (!current.challenge) {
-        console.error('Image grid challenge data is missing');
-        return;
-      }
-      setCurrentGridChallenge(current.challenge);
-    }
-  }, [current, currentGridChallenge]);
 
   const handleInput = (e) => setInput(e.target.value);
 
@@ -175,32 +163,30 @@ function App() {
     <div style={{ textAlign: "center", marginTop: "2rem", fontSize: "1.2rem" }}>
       <h1 style={{ fontSize: "2.5rem", marginBottom: "2rem" }}>reCAPTCHA Game</h1>
       {current.type === "imageGrid" ? (
-        currentGridChallenge && currentGridChallenge.prompt && currentGridChallenge.image ? (
-          <>
-            <p style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>{currentGridChallenge.prompt}</p>
-            <ImageGridChallenge 
-              onSuccess={() => {
+        <>
+          <p style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>{current.prompt}</p>
+          <ImageGridChallenge 
+            onSuccess={() => {
+              try {
                 setCompletedChallenges(prev => {
                   const newSet = new Set(prev);
                   newSet.add(step);
                   return newSet;
                 });
-                setStep(prevStep => {
-                  const newStep = prevStep + 1;
-                  if (newStep >= challenges.length) {
-                    return challenges.length;
-                  }
-                  setCurrentGridChallenge(null);
-                  return newStep;
-                });
-              }} 
-              correctIndexes={currentGridChallenge.correctIndexes}
-              image={currentGridChallenge.image}
-            />
-          </>
-        ) : (
-          <p style={{ color: "red" }}>Error loading image challenge. Please refresh the page.</p>
-        )
+                const nextStep = step + 1;
+                if (nextStep >= challenges.length) {
+                  setStep(challenges.length);
+                } else {
+                  setStep(nextStep);
+                }
+              } catch (error) {
+                console.error('Error in onSuccess handler:', error);
+              }
+            }} 
+            correctIndexes={current.correctIndexes}
+            image={current.image}
+          />
+        </>
       ) : (
         <>
           <p style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>{current.prompt}</p>

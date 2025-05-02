@@ -20,7 +20,7 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
       isSelected === correctIndexes.includes(idx)
     );
     
-    if (isCorrect) {
+    if (isCorrect && typeof onSuccess === 'function') {
       onSuccess();
     }
   };
