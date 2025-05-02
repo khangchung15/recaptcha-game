@@ -92,13 +92,15 @@ function App() {
         prompt: "What is the square root of 144?",
         answer: "12",
       },
-      ...imageGridChallenges.map(challenge => ({
+      ...imageGridChallenges.map((challenge, index) => ({
         type: "imageGrid",
         prompt: challenge.prompt,
         image: challenge.image,
-        correctIndexes: challenge.correctIndexes
+        correctIndexes: challenge.correctIndexes,
+        id: `grid-${index}` // Add unique ID for each grid challenge
       }))
     ];
+    console.log('Total challenges:', initialChallenges.length);
     return shuffleArray(initialChallenges);
   });
   
@@ -111,6 +113,7 @@ function App() {
 
   const nextChallenge = () => {
     const nextStep = step + 1;
+    console.log('Moving to step:', nextStep, 'out of', challenges.length);
     if (nextStep >= challenges.length) {
       setStep(challenges.length);
     } else {
@@ -141,6 +144,12 @@ function App() {
 
   if (!current || step >= challenges.length) {
     const allCompleted = completedChallenges.size === challenges.length;
+    console.log('Game state:', {
+      step,
+      totalChallenges: challenges.length,
+      completed: completedChallenges.size,
+      allCompleted
+    });
     return (
       <div style={{ textAlign: "center", marginTop: "2rem", fontSize: "1.2rem" }}>
         <h1 style={{ fontSize: "2.5rem", marginBottom: "2rem" }}>
@@ -163,6 +172,7 @@ function App() {
         <>
           <p style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>{current.prompt}</p>
           <ImageGridChallenge 
+            key={current.id} // Add key to force remount on challenge change
             onSuccess={() => {
               setCompletedChallenges(prev => {
                 const newSet = new Set(prev);
