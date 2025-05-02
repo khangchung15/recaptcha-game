@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 const gridSize = 3; // 3x3 grid
 
-export default function ImageGridChallenge({ onSuccess, correctIndexes, image }) {
+export default function ImageGridChallenge({ onSuccess, correctIndexes, image, onError }) {
   const [selected, setSelected] = useState(Array(gridSize * gridSize).fill(false));
 
   const handleClick = (idx) => {
@@ -12,6 +12,10 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
       newSelected[idx] = !newSelected[idx];
       return newSelected;
     });
+    // Clear error message when user changes selection
+    if (typeof onError === 'function') {
+      onError('');
+    }
   };
 
   const handleSubmit = () => {
@@ -21,6 +25,8 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
     
     if (isCorrect && typeof onSuccess === 'function') {
       onSuccess();
+    } else if (typeof onError === 'function') {
+      onError("Try again! That's not correct.");
     }
   };
 
@@ -32,6 +38,10 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
           gridTemplateColumns: `repeat(${gridSize}, 150px)`,
           gap: "0px",
           justifyContent: "center",
+          backgroundColor: "#333",
+          padding: "8px",
+          borderRadius: "8px",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)"
         }}
       >
         {Array(gridSize * gridSize).fill(null).map((_, idx) => {
@@ -48,7 +58,7 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
               style={{
                 width: 150,
                 height: 150,
-                border: selected[idx] ? "2px solid blue" : "1px solid #000",
+                border: selected[idx] ? "3px solid #4a9eff" : "1px solid #444",
                 backgroundImage: `url(${image})`,
                 backgroundSize: `${gridSize * 100}% ${gridSize * 100}%`,
                 backgroundPosition: `${percentX}% ${percentY}%`,
@@ -57,15 +67,46 @@ export default function ImageGridChallenge({ onSuccess, correctIndexes, image })
                 margin: 0,
                 cursor: "pointer",
                 boxSizing: "border-box",
+                borderRadius: "0px",
+                transition: "border-color 0.2s ease, transform 0.1s ease",
+                transform: selected[idx] ? "scale(0.98)" : "scale(1)",
+              }}
+              onMouseOver={(e) => {
+                if (!selected[idx]) {
+                  e.target.style.borderColor = "#666";
+                }
+              }}
+              onMouseOut={(e) => {
+                if (!selected[idx]) {
+                  e.target.style.borderColor = "#444";
+                }
               }}
             />
           );
         })}
       </div>
-      <div style={{ marginTop: 16 }}>
+      <div style={{ marginTop: 20 }}>
         <button 
           type="button"
           onClick={handleSubmit}
+          style={{
+            padding: "0.8rem 2rem",
+            fontSize: "1.2rem",
+            backgroundColor: "#4a9eff",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease, transform 0.1s ease",
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = "#3a8eff";
+            e.target.style.transform = "scale(1.05)";
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = "#4a9eff";
+            e.target.style.transform = "scale(1)";
+          }}
         >
           Submit
         </button>
