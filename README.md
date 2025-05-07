@@ -1,5 +1,6 @@
 # Welcome to ReCaptcha Game
 This is a parody game on ReCaptcha, inspired by the Password Game.
+
 This is hosted on https://khangchung15.github.io/recaptcha-game
 
 ## What's in this game?
