@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/recaptcha-game/static/css/main.336a6cd2.css",
-    "main.js": "/recaptcha-game/static/js/main.cd0ba2a0.js",
+    "main.js": "/recaptcha-game/static/js/main.dd41e5ad.js",
     "static/js/453.70723c1c.chunk.js": "/recaptcha-game/static/js/453.70723c1c.chunk.js",
     "static/media/gorillaelephant.png": "/recaptcha-game/static/media/gorillaelephant.f24242d3b92e5a0db822.png",
     "static/media/smilingman.png": "/recaptcha-game/static/media/smilingman.a290e3682fbcc1c764cf.png",
@@ -19,11 +19,11 @@
     "static/media/cpp.png": "/recaptcha-game/static/media/cpp.780598e23808ce7e35d5.png",
     "index.html": "/recaptcha-game/index.html",
     "main.336a6cd2.css.map": "/recaptcha-game/static/css/main.336a6cd2.css.map",
-    "main.cd0ba2a0.js.map": "/recaptcha-game/static/js/main.cd0ba2a0.js.map",
+    "main.dd41e5ad.js.map": "/recaptcha-game/static/js/main.dd41e5ad.js.map",
     "453.70723c1c.chunk.js.map": "/recaptcha-game/static/js/453.70723c1c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.336a6cd2.css",
-    "static/js/main.cd0ba2a0.js"
+    "static/js/main.dd41e5ad.js"
   ]
 }
