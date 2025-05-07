@@ -548,7 +548,7 @@ function App() {
                 </div>
 
                 <div className="team-card">
-                  <div className="team-role">Vice President of HR</div>
+                  <div className="team-role">HR Employee</div>
                   <div className="team-name">Grumpy Goblin</div>
                   <div className="team-description">Hired to meet quota. Loves eating paperwork. Tried to convince others to try eating papers.</div>
                 </div>
@@ -594,7 +594,8 @@ function App() {
                 <div className="team-card">
                   <div className="team-role">Auditor</div>
                   <div className="team-name">IRS Agent</div>
-                  <div className="team-description">Wears sunglasses indoors and walks around with a clipboard. Knows about your tax deductions.</div>
+                  <div className="team-description">Wears sunglasses indoors and walks around with a clipboard. Knows about your tax deductions</div>
+                  <div className="team-description">Would not tell us their name</div>
                 </div>
               </div>
             </div>
