@@ -1263,26 +1263,32 @@ function App() {
       <>
         {renderMainContent()}
         {renderFooter()}
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          <div style={{
-            maxWidth: "400px",
-            padding: "2rem",
-            backgroundColor: "#2d2d2d",
-            borderRadius: "12px",
-            boxShadow: "0 8px 16px rgba(0, 0, 0, 0.3)",
-            border: "1px solid #444"
-          }}>
+        <div 
+          onClick={() => setShowRecaptcha(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: "400px",
+              padding: "2rem",
+              backgroundColor: "#2d2d2d",
+              borderRadius: "12px",
+              boxShadow: "0 8px 16px rgba(0, 0, 0, 0.3)",
+              border: "1px solid #444"
+            }}
+          >
             <h1 style={{
               fontSize: "2rem",
               marginBottom: "1.5rem",
@@ -1335,26 +1341,32 @@ function App() {
     <>
       {renderMainContent()}
       {renderFooter()}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        zIndex: 999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div style={{
-          maxWidth: "500px",
-          padding: "2rem",
-          backgroundColor: "#2d2d2d",
-          borderRadius: "12px",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
-          border: "1px solid #444"
-        }}>
+      <div 
+        onClick={() => setShowRecaptcha(false)}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <div 
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            maxWidth: "500px",
+            padding: "2rem",
+            backgroundColor: "#2d2d2d",
+            borderRadius: "12px",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
+            border: "1px solid #444"
+          }}
+        >
           <h1 style={{
             fontSize: "1.5rem",
             marginBottom: "1.5rem",
