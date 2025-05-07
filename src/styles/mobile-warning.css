@@ -1,0 +1,45 @@
+.mobile-warning {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  z-index: 9999;
+  color: white;
+  text-align: center;
+  padding: 2rem;
+}
+
+.mobile-warning-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 90%;
+}
+
+.mobile-warning h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #ff6b6b;
+}
+
+.mobile-warning p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .mobile-warning {
+    display: block;
+  }
+  
+  /* Hide the main app content on mobile */
+  .app-container {
+    display: none !important;
+  }
+} 
