@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ImageGridChallenge from "./components/ImageGridChallenge";
 import FakeRecaptchaPopup from "./components/FakeRecaptchaPopup";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import './App.css';
 import skyscraper from "./assets/skyscraper.jpg";
 import airplane from "./assets/airplane.jpg";
 import zoo from "./assets/zoo.jpg";
@@ -14,6 +19,7 @@ import solar from "./assets/solar.jpg";
 import gorilla from "./assets/gorillaelephant.png";
 import scenery from "./assets/scenery.png";
 import physics from "./assets/physicists.jpg";
+import objection from "./assets/objection.png";
 
 const imageGridChallenges = [
   {
@@ -225,334 +231,623 @@ function App() {
     setShowAboutPopup(true);
   };
 
+  const handleOutsideClick = (e) => {
+    if (e.target === e.currentTarget) {
+      setShowTeamPopup(false);
+      setShowAboutPopup(false);
+    }
+  };
+
   const renderMainContent = () => (
-    <div style={{
-      minHeight: "100vh",
-      backgroundColor: "#f5f5f5",
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-    }}>
-      {/* Header */}
-      <header style={{
-        backgroundColor: "#fff",
-        padding: "1rem 2rem",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center"
-      }}>
-        <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#333" }}>Imaginary Friends</div>
-        <nav>
-          <a href="#" style={{ marginLeft: "1.5rem", color: "#666", textDecoration: "none" }}>Home</a>
-          <a href="#" onClick={handleTeamClick} style={{ marginLeft: "1.5rem", color: "#666", textDecoration: "none" }}>Our Team</a>
-          <a href="#" onClick={handleAboutClick} style={{ marginLeft: "1.5rem", color: "#666", textDecoration: "none" }}>About</a>
+    <div className="app-container">
+      <header className="header">
+        <div className="header-logo">GRIF</div>
+        <nav className="header-nav">
+          <a href="#">Home</a>
+          <a href="#" onClick={handleTeamClick}>Our Team</a>
+          <a href="#" onClick={handleAboutClick}>About</a>
         </nav>
       </header>
 
-      {/* Main Content */}
-      <main style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        padding: "2rem",
-        display: "flex",
-        gap: "4rem",
-        alignItems: "flex-start"
-      }}>
-        {/* Left side - Hero section */}
-        <div style={{ flex: 1 }}>
-          <h1 style={{
-            fontSize: "3.5rem",
-            color: "#333",
-            marginBottom: "1.5rem",
-            lineHeight: "1.2"
-          }}>
-            Welcome to Imaginary Friends
-          </h1>
-          <p style={{
-            fontSize: "1.2rem",
-            color: "#666",
-            marginBottom: "2rem",
-            lineHeight: "1.6"
-          }}>
-            Want a real ID for your imaginary friends? Sign up now!
-          </p>
-          <div style={{
-            display: "flex",
-            gap: "1rem",
-            marginBottom: "2rem"
-          }}>
-            <div style={{
-              padding: "1rem",
-              backgroundColor: "#fff",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              flex: 1
-            }}>
-              <h3 style={{ color: "#333", marginBottom: "0.5rem" }}>Easy to Use</h3>
-              <p style={{ color: "#666", fontSize: "0.9rem" }}>Simple and intuitive interface for the best user experience</p>
+      <main className="main-content">
+        <div className="hero-section">
+          <h1 className="hero-title">Welcome to Imaginary Friends</h1>
+          <p className="hero-description">Want a real ID for your imaginary friends? Sign up now!</p>
+          
+          <div className="tile-container">
+            <div className="tile">
+              <h3>Easy to Sign Up</h3>
+              <p>Simple and intuitive interface for the best user experience</p>
+              <p>Just whisper your friend's name into your nearest microwave. We'll handle the rest</p>
             </div>
-            <div style={{
-              padding: "1rem",
-              backgroundColor: "#fff",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              flex: 1
-            }}>
-              <h3 style={{ color: "#333", marginBottom: "0.5rem" }}>Secure</h3>
-              <p style={{ color: "#666", fontSize: "0.9rem" }}>Your data is protected with industry-standard security</p>
+
+            <div className="tile">
+              <h3>Secure (Probably)</h3>
+              <p>Your data is "protected" with industry-standard imaginary security™</p>
+              <p>Firewalls made of unicorn hair. Encryption powered by childhood secrets</p>
+            </div>
+
+            <div className="tile">
+              <h3>Legally Binding (Not Really)</h3>
+              <p>All friendships come with a 100% unenforceable Certificate of Authenticity</p>
+              <p>Disclaimer: May summon a mild sense of nostalgia. Side effects include denial</p>
+            </div>
+
+            <div className="tile">
+              <h3>Automatic Updates</h3>
+              <p>Your friends evolve based on your life choices.</p>
+              <p>Example: "Gary the Ghost Shark" could be your new mortal enemy!</p>
             </div>
           </div>
         </div>
 
-        {/* Right side - Signup form */}
-        <div style={{
-          width: "400px",
-          padding: "2rem",
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
-        }}>
-          <h2 style={{
-            fontSize: "1.8rem",
-            color: "#333",
-            marginBottom: "1.5rem",
-            textAlign: "center"
-          }}>Create Account</h2>
+        <div className="signup-container">
+          <h2 className="signup-title">Create Account</h2>
           <form>
-            <div style={{ marginBottom: "1rem" }}>
-              <label style={{
-                display: "block",
-                marginBottom: "0.5rem",
-                color: "#666",
-                fontSize: "0.9rem"
-              }}>Email</label>
+            <div className="form-group">
+              <label className="form-label">Email</label>
               <input
                 type="email"
                 placeholder="Enter your email"
-                style={{
-                  padding: "0.8rem",
-                  fontSize: "1rem",
-                  borderRadius: "6px",
-                  border: "1px solid #ddd",
-                  backgroundColor: "#fff",
-                  color: "#333",
-                  width: "100%",
-                  boxSizing: "border-box"
-                }}
+                className="form-input"
               />
             </div>
-            <div style={{ marginBottom: "1.5rem" }}>
-              <label style={{
-                display: "block",
-                marginBottom: "0.5rem",
-                color: "#666",
-                fontSize: "0.9rem"
-              }}>Password</label>
+            <div className="form-group">
+              <label className="form-label">Password</label>
               <input
                 type="password"
                 placeholder="Create a password"
-                style={{
-                  padding: "0.8rem",
-                  fontSize: "1rem",
-                  borderRadius: "6px",
-                  border: "1px solid #ddd",
-                  backgroundColor: "#fff",
-                  color: "#333",
-                  width: "100%",
-                  boxSizing: "border-box"
-                }}
+                className="form-input"
               />
             </div>
             <button
               type="button"
               onClick={handleSignUpClick}
-              style={{
-                padding: "1rem",
-                fontSize: "1rem",
-                backgroundColor: "#4a9eff",
-                color: "white",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                width: "100%",
-                fontWeight: "600"
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = "#3a8eff";
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = "#4a9eff";
-              }}
+              className="signup-button"
             >
               Sign Up
             </button>
-            <p style={{
-              textAlign: "center",
-              marginTop: "1rem",
-              color: "#666",
-              fontSize: "0.9rem"
-            }}>
-              Already have an account? <a href="#" style={{ color: "#4a9eff", textDecoration: "none" }}>Log in</a>
+            <p className="login-link">
+              Already have an account? <a href="#">Log in</a>
             </p>
           </form>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer style={{
-        backgroundColor: "#fff",
-        padding: "2rem",
-        marginTop: "4rem",
-        borderTop: "1px solid #eee"
-      }}>
-        <div style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          display: "flex",
-          justifyContent: "space-between",
-          color: "#666",
-          fontSize: "0.9rem"
-        }}>
-          <div>© 2024 Imaginary Friends. All rights reserved.</div>
-          <div style={{ display: "flex", gap: "2rem" }}>
-            <a href="#" style={{ color: "#666", textDecoration: "none" }}>Privacy Policy</a>
-            <a href="#" style={{ color: "#666", textDecoration: "none" }}>Terms of Service</a>
-            <a href="#" style={{ color: "#666", textDecoration: "none" }}>Contact Us</a>
-          </div>
-        </div>
-      </footer>
+      <div className="reviews-section">
+        <h2 className="reviews-title">What Our Customers Say</h2>
+        <Swiper
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={'auto'}
+          loop={true}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          }}
+          modules={[Autoplay]}
+          className="reviews-swiper"
+          spaceBetween={30}
+        >
+          <SwiperSlide>
+            <div className="review-card">
+              <div className="review-content">
+                <p className="review-text">"My daughter finally has proof her dragon friend, Sparkles, is 'real.' Now she won't stop demanding a legal name change for him. 10/10!"</p>
+              </div>
+              <div className="review-footer">
+                <p className="review-author">- Emily R.</p>
+                <p className="review-role">Concerned but Supportive Mom</p>
+              </div>
+            </div>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <div className="review-card">
+              <div className="review-content">
+                <p className="review-text">"The microwave registration process was surprisingly effective. I'm now legally recognized as a sentient sock puppet!"</p>
+              </div>
+              <div className="review-footer">
+                <p className="review-author">- Sir Reginald Von Sock III</p>
+                <p className="review-role">Director of Make-Believe Compliance</p>
+              </div>
+            </div>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <div className="review-card">
+              <div className="review-content">
+                <p className="review-text">"I registered my childhood imaginary friend, Captain Noodle. The certificate arrived printed on what looks like a napkin. Worth it."</p>
+              </div>
+              <div className="review-footer">
+                <p className="review-author">- David L.</p>
+                <p className="review-role">Emotional 30-Year-Old</p>
+              </div>
+            </div>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <div className="review-card">
+              <div className="review-content">
+                <p className="review-text">"I may have registered 17 'friends.' The IRS emailed me about tax exemptions for dependents. Help?"</p>
+              </div>
+              <div className="review-footer">
+                <p className="review-author">- Sarah K.</p>
+                <p className="review-role">Overinvested in the Bit</p>
+              </div>
+            </div>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <div className="review-card">
+              <div className="review-content">
+                <p className="review-text">"Used this to prank my therapist. She's now questioning her career. 10/10 would gaslight again."</p>
+              </div>
+              <div className="review-footer">
+                <p className="review-author">- Mark T.</p>
+                <p className="review-role">Youtuber Content Creator Specialize in Pranks</p>
+              </div>
+            </div>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <div className="review-card">
+              <div className="review-content">
+                <p className="review-text">"I sued my landlord for not accepting my imaginary roommate as a co-signer. The judge laughed. Worth every penny."</p>
+              </div>
+              <div className="review-footer">
+                <p className="review-author">- Jason M.</p>
+                <p className="review-role">Anti-Establishment Hero Wannabe</p>
+              </div>
+            </div>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <div className="review-card">
+              <div className="review-content">
+                <p className="review-text"></p>
+              </div>
+              <div className="review-footer">
+                <p className="review-author">- </p>
+                <p className="review-role"></p>
+              </div>
+            </div>
+          </SwiperSlide>
+        </Swiper>
+      </div>
     </div>
+  );
+
+  const renderFooter = () => (
+    <footer className="footer">
+      <div className="footer-content">
+        <div>© 2024 Imaginary Friends. All rights are not reserved.</div>
+        <div className="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+    </footer>
   );
 
   if (showTeamPopup) {
     return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        zIndex: 999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div style={{
-          maxWidth: "400px",
-          padding: "2rem",
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
-        }}>
-          <h2 style={{
-            fontSize: "1.8rem",
-            color: "#333",
-            marginBottom: "1.5rem",
-            textAlign: "center"
-          }}>Our Team</h2>
+      <>
+        {renderMainContent()}
+        {renderFooter()}
+        <div 
+          onClick={handleOutsideClick}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'auto',
+            padding: '2rem'
+          }}
+        >
           <div style={{
-            textAlign: "center",
-            color: "#666",
-            fontSize: "1.1rem",
-            lineHeight: "1.6"
+            maxWidth: "1000px",
+            padding: "2rem",
+            backgroundColor: "#2d2d2d",
+            borderRadius: "12px",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.3)",
+            border: "1px solid #444",
+            maxHeight: "80vh",
+            overflow: "auto"
           }}>
-            <p>All positions are held by:</p>
-            <p style={{ 
+            <h2 style={{
+              fontSize: "1.8rem",
               color: "#4a9eff",
-              fontWeight: "bold",
-              fontSize: "1.2rem",
-              marginTop: "1rem"
-            }}>Khang Chung</p>
-          </div>
-          <button
-            onClick={() => setShowTeamPopup(false)}
-            style={{
+              marginBottom: "1.5rem",
+              textAlign: "center"
+            }}>Meet Our Team!</h2>
+
+            {/* Executive Section */}
+            <div style={{ marginBottom: "2rem" }}>
+              <h3 style={{
+                color: "#4a9eff",
+                fontSize: "1.4rem",
+                marginBottom: "1rem",
+                borderBottom: "1px solid #444",
+                paddingBottom: "0.5rem",
+                textAlign: "center"
+              }}>Executive</h3>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "2rem"
+              }}>
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Founder</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Alex "The Thinker" Finch</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Visionary, lunatic, and proud parent of 37 imaginary friends and counting. Suspected to be gnomes</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>CEO</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Sleep Paralysis Demon</p> 
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Whispers Your Name At 3 AM. We think he is just shy</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>"y̷o̷u̵r̷ ̴a̶c̷t̵i̷o̵n̴s̷ ̴h̵a̴v̷e̸ ̴c̶o̶n̴s̷e̵q̸u̶e̵n̶c̸e̸s̸"  -Demon</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Legal & Compliance Section */}
+            <div style={{ marginBottom: "2rem" }}>
+              <h3 style={{
+                color: "#4a9eff",
+                fontSize: "1.4rem",
+                marginBottom: "1rem",
+                borderBottom: "1px solid #444",
+                paddingBottom: "0.5rem",
+                textAlign: "center"
+              }}>Legal & Compliance</h3>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "2rem"
+              }}>
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Director of Make-Believe Compliance</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Sir Reginald Von Sock III</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>A sentient sock with a law degree (we doubt it's a real degree)</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Head of Legal Affairs</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Detective Monkey</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Resolve legal disputes and throw bananas at criminals</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>"Ooh ooh aah aah" -Monke</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Head of Legal Team</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Phoenix Wright</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>
+                    Periodically yells "
+                    <span 
+                      style={{ 
+                        position: "relative", 
+                        display: "inline-block",
+                        cursor: "pointer"
+                      }}
+                      onMouseEnter={(e) => {
+                        const letters = e.currentTarget.querySelectorAll('.jumping-letter');
+                        letters.forEach((letter, i) => {
+                          letter.style.animation = `jump 0.5s infinite`;
+                          letter.style.animationDelay = `${i * 0.04}s`;
+                        });
+                        // Show the image
+                        const img = e.currentTarget.querySelector('img');
+                        if (img) img.style.opacity = 1;
+                      }}
+                      onMouseLeave={(e) => {
+                        const letters = e.currentTarget.querySelectorAll('.jumping-letter');
+                        letters.forEach(letter => {
+                          letter.style.animation = "none";
+                        });
+                        // Hide the image
+                        const img = e.currentTarget.querySelector('img');
+                        if (img) img.style.opacity = 0;
+                      }}
+                    >
+                      {"Objection!".split('').map((char, i) => (
+                        <span
+                          key={i}
+                          className="jumping-letter"
+                          style={{
+                            display: "inline-block",
+                            transition: "all 0.3s ease"
+                          }}
+                        >
+                          {char}
+                        </span>
+                      ))}
+                      <img 
+                        src={objection} 
+                        alt="Objection!" 
+                        style={{
+                          position: "absolute",
+                          bottom: "150%",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "100px",
+                          height: "auto",
+                          opacity: 0,
+                          transition: "opacity 0.3s ease",
+                          pointerEvents: "none",
+                          zIndex: 1000
+                        }}
+                      />
+                    </span>
+                    " at the top of his lungs which spawns a speech bubble
+                  </p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Paralegal</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Gavin the Talking Gavel</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Read and memorized all Terms of Service and Privacy Policy he could find instead of just accepting</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Technology Section */}
+            <div style={{ marginBottom: "2rem" }}>
+              <h3 style={{
+                color: "#4a9eff",
+                fontSize: "1.4rem",
+                marginBottom: "1rem",
+                borderBottom: "1px solid #444",
+                paddingBottom: "0.5rem",
+                textAlign: "center"
+              }}>Technology</h3>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "2rem"
+              }}>
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Cybersecurity Expert</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Elliot Alderson</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Wait, how did he get here? He keeps muttering about "root access to the human mind."</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Isn't he supposed to be in Mr. Robot?</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Lead Developer</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>GPT the human AI</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Fluent in all languages, including programming languages. His skills are so good that other programmers are ashamed of themselves</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Developer (Imaginary?)</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Khang Chung</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Always run "git push origin main --force" when testing a small change</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>"Hey that's not true, Balala" -Khang Chung</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>UI/UX Designer</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>404 Entity</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Keeps trying to fix the website but ends up breaking it more. CEO was talking about firing him</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Lead Server IT</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>A Green PNY 32GB USB Hard Disk</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Fixes servers by yelling "HAVE YOU TRIED TURNING IT OFF AND ON AGAIN?"</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>QA Tester</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>???</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Keeps coming up with new ideas but it's a nightmare to implement</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>We know the name but we just hate him</p>
+                </div>
+                
+              </div>
+            </div>
+
+            {/* Operations Section */}
+            <div style={{ marginBottom: "2rem" }}>
+              <h3 style={{
+                color: "#4a9eff",
+                fontSize: "1.4rem",
+                marginBottom: "1rem",
+                borderBottom: "1px solid #444",
+                paddingBottom: "0.5rem",
+                textAlign: "center"
+              }}>Operations</h3>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "2rem"
+              }}>
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Vice President of HR</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Casper the Scary Ghost</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Haunts the breakroom fridge. Knows who took the last BLT sandwich.</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Vice President of HR</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Grumpy Goblin</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Hired to meet quota. Loves eating paperwork. Tried to convince others to try eating papers.</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Wellness Coach</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Danny the Floating Coach</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Gives motivational speeches as he gives out free pizzas. We don't think he's a real coach.</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Office Therapist</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>VHS Tape of Bob Ross</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Only says "It's a happy little accidents" as you keep venting</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Head of Rumors</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Balala the Talking Teapot</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Formerly a real teapot, now a motivational speaker. Specializes in spreading fake rumors</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Finance Section */}
+            <div style={{ marginBottom: "2rem" }}>
+              <h3 style={{
+                color: "#4a9eff",
+                fontSize: "1.4rem",
+                marginBottom: "1rem",
+                borderBottom: "1px solid #444",
+                paddingBottom: "0.5rem",
+                textAlign: "center"
+              }}>Finance</h3>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "2rem"
+              }}>
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Imaginary Treasurer</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Fiveish the Yapping Dollar</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Cannot stop yapping about his grand scheme to print more of himself</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>"Why can't printers just print more money?" -Fiveish</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Blockchain Specialist</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>NFT the Imaginary Ape</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Draws digital art in MS Paint and sells them as "art." Becomes the main source of income for the company</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>"They keep buying, I keep drawing" -NFT</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Auditor</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>IRS Agent</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Wears sunglasses indoors and walks around with a clipboard. Knows about your tax deductions.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Customer Experience Section */}
+            <div style={{ marginBottom: "2rem" }}>
+              <h3 style={{
+                color: "#4a9eff",
+                fontSize: "1.4rem",
+                marginBottom: "1rem",
+                borderBottom: "1px solid #444",
+                paddingBottom: "0.5rem",
+                textAlign: "center"
+              }}>Customer Support</h3>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "2rem"
+              }}>
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Head of Customer Support</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Karen the Abstract Concept of "No Refunds"</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>A shapeless entity that haunts customer service reps. Immune to layoff.</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Overworked Customer Support Staff</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Ms. Schrödinger the Multidimensional Cat</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Answers calls from 12 different realities simultaneously. Still gets confused by fax machines.</p>
+                </div>
+
+                <div style={{ padding: "1rem", border: "1px solid #444", borderRadius: "8px" }}>
+                  <p style={{ color: "#4a9eff", fontWeight: "bold", fontSize: "1.2rem" }}>Translator and Interpreter</p>
+                  <p style={{ fontWeight: "bold", color: "#fff" }}>Sentient Portuguese-to-Russian Dictionary</p>
+                  <p style={{ fontSize: "0.9rem", color: "#bbb" }}>Only speaks Portuguese and Russian so no one on our team can understand her. Why did the CEO hire her?</p>
+                </div>
+              </div>
+            </div>
+
+            <div style={{
               marginTop: "2rem",
-              padding: "0.8rem 1.5rem",
-              fontSize: "1rem",
-              backgroundColor: "#4a9eff",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-              width: "100%"
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = "#3a8eff";
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = "#4a9eff";
-            }}
-          >
-            Close
-          </button>
+              padding: "1rem",
+              border: "1px solid #444",
+              borderRadius: "8px",
+              fontSize: "0.9rem",
+              color: "#bbb",
+              fontStyle: "italic"
+            }}>
+              <p>Disclaimer: All staff members are either fictional, legally distinct from real entities, or figments of your imagination. Any resemblance to actual people, teapots, or rogue hackers is purely coincidental (or is it?).</p>
+              <p style={{ marginTop: "1rem", textAlign: "center", fontWeight: "bold" }}>Join us in delusion! ™</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (showAboutPopup) {
     return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        zIndex: 999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div style={{
-          maxWidth: "400px",
-          padding: "2rem",
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
-        }}>
-          <h2 style={{
-            fontSize: "1.8rem",
-            color: "#333",
-            marginBottom: "1.5rem",
-            textAlign: "center"
-          }}>About</h2>
+      <>
+        {renderMainContent()}
+        {renderFooter()}
+        <div 
+          onClick={handleOutsideClick}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'auto',
+            padding: '2rem'
+          }}
+        >
           <div style={{
-            textAlign: "center",
-            color: "#666",
-            fontSize: "1.1rem",
-            lineHeight: "1.6"
+            maxWidth: "800px",
+            padding: "2rem",
+            backgroundColor: "#2d2d2d",
+            borderRadius: "12px",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.3)",
+            border: "1px solid #444",
+            maxHeight: "80vh",
+            overflow: "auto"
           }}>
-            {/* Leave blank for now */}
+            <h2 style={{
+              fontSize: "1.8rem",
+              color: "#4a9eff",
+              marginBottom: "1.5rem",
+              textAlign: "center"
+            }}>About</h2>
+            <div style={{
+              textAlign: "left",
+              color: "#e0e0e0",
+              fontSize: "1.1rem",
+              lineHeight: "1.6"
+            }}>
+              {"Welcome to Global Registry of Imaginary Friends (GRIF), the world's first (and legally questionable) database for your made-up besties!"}
+              {" At our imaginary headquarter, we believe that our unseen companions deserve recognition."}
+              {" Tired of your imaginary pals being ignored by society? Fed up with people dismissing Gary the Ghost Shark as \"not real\" or \"a concerning obsession\"?"}
+              {" Well, no more! Here, we validate, certify, and immortalize your fictional companions with the dignity they deserve."}
+              {" Whether it's a sentient sock puppet, a cosmic unicorn accountant, or your sleep-deprived hallucination named Dave, we've got you covered."}
+              {" Our mission? To give your invisible entourage the bureaucratic recognition they've been denied. Because friendship shouldn't be limited by reality."}
+            </div>
           </div>
-          <button
-            onClick={() => setShowAboutPopup(false)}
-            style={{
-              marginTop: "2rem",
-              padding: "0.8rem 1.5rem",
-              fontSize: "1rem",
-              backgroundColor: "#4a9eff",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-              width: "100%"
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = "#3a8eff";
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = "#4a9eff";
-            }}
-          >
-            Close
-          </button>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -560,6 +855,7 @@ function App() {
     return (
       <>
         {renderMainContent()}
+        {renderFooter()}
         <div style={{
           position: 'fixed',
           top: 0,
@@ -576,7 +872,12 @@ function App() {
   }
 
   if (!showRecaptcha) {
-    return renderMainContent();
+    return (
+      <>
+        {renderMainContent()}
+        {renderFooter()}
+      </>
+    );
   }
 
   if (!current || step >= challenges.length) {
@@ -584,6 +885,7 @@ function App() {
     return (
       <>
         {renderMainContent()}
+        {renderFooter()}
         <div style={{
           position: 'fixed',
           top: 0,
@@ -655,6 +957,7 @@ function App() {
   return (
     <>
       {renderMainContent()}
+      {renderFooter()}
       <div style={{
         position: 'fixed',
         top: 0,
@@ -786,5 +1089,15 @@ function App() {
     </>
   );
 }
+
+// Add this at the end of the file, before the export default App
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes jump {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+`;
+document.head.appendChild(style);
 
 export default App;
