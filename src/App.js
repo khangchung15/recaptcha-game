@@ -1299,7 +1299,7 @@ function App() {
               textAlign: "center"
             }}>
               {allCompleted
-                ? `You successfully passed the captcha! You are indeed a human.`
+                ? `You successfully passed the captcha! You are indeed a human. You can now go back and register your imaginary friends.`
                 : `You completed ${completedChallenges.size} out of ${challenges.length} challenges. Please try again.`
               }
             </p>
@@ -1323,7 +1323,7 @@ function App() {
                 e.target.style.backgroundColor = "#4a9eff";
               }}
             >
-              {allCompleted ? "Continue" : "Try Again"}
+              {allCompleted ? "Let's go!" : "Try Again"}
             </button>
           </div>
         </div>
