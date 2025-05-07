@@ -662,11 +662,11 @@ function App() {
           <SwiperSlide>
             <div className="review-card">
               <div className="review-content">
-                <p className="review-text">"Submitted my imaginary friend's headshot to Netflix. They cast him in Stranger Things Season 5. I'm demanding 15% commission."</p>
+                <p className="review-text">"Submitted my imaginary friend's headshot to Netflix. They cast him in Stranger Things Season 6. I'm demanding 15% commission."</p>
               </div>
               <div className="review-footer">
                 <p className="review-author">- Chad W.</p>
-                <p className="review-role"></p>
+                <p className="review-role">Still waiting for Stranger Things Season 6</p>
               </div>
             </div>
           </SwiperSlide>
