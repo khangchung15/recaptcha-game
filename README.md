@@ -1,6 +1,9 @@
 # Welcome to ReCaptcha Game
 This is a parody game on ReCaptcha, inspired by the Password Game.
 
+## What's in this game?
+- Decoy Website: Various features and customer testimonials claiming how good the service provided by an imaginary company is
+- Decoy Captcha: Various captcha that will not allow user to sign up
 
 ## Developer Note:
 To publish on GitHub Pages: add, commit, push. Then:
