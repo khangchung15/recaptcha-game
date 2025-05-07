@@ -8,12 +8,9 @@ This is hosted on https://khangchung15.github.io/recaptcha-game
 - Decoy Captcha: Various captcha that will not allow user to sign up
 
 ## Developer Note:
-To publish on GitHub Pages: add, commit, push. Then:
-### `npm run build`
-### `npm run deploy`
+To publish on GitHub Pages: add, commit, push. Then: `npm run build` and `npm run deploy`
 
-To Test locally:
-### `npm start`
+To Test locally: `npm start`
 
 
 
