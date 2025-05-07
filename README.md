@@ -12,4 +12,9 @@ To publish on GitHub Pages: add, commit, push. Then:
 
 To Test locally:
 ### `npm start`
+
+
+
+
+
 This is an independent project and is protected under the law of parody
