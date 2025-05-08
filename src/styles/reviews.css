@@ -1,17 +1,17 @@
 .reviews-section {
   padding: 4rem 0;
   margin: 2rem 0;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
   overflow: hidden;
 }
 
 .reviews-title {
   text-align: center;
-  color: #2d3748;
+  color: #fff;
   font-size: 2.5rem;
   margin-bottom: 3rem;
   font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .reviews-swiper {
@@ -43,21 +43,22 @@
 }
 
 .review-card {
-  background: white;
+  background: #2d2d2d;
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   max-width: 600px;
   margin: 0 auto;
   height: 100%;
   display: flex;
   flex-direction: column;
+  border: 1px solid #444;
 }
 
 .review-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
 }
 
 .review-content {
@@ -68,25 +69,25 @@
 .review-text {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #4a5568;
+  color: #e0e0e0;
   font-style: italic;
   margin: 0;
 }
 
 .review-footer {
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #444;
   padding-top: 1rem;
 }
 
 .review-author {
   font-weight: 600;
-  color: #2d3748;
+  color: #4a9eff;
   margin: 0;
   font-size: 1.1rem;
 }
 
 .review-role {
-  color: #718096;
+  color: #bbb;
   margin: 0.25rem 0 0;
   font-size: 0.9rem;
 }
