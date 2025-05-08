@@ -10,7 +10,9 @@ const FakeRecaptchaPopup = ({ onVerify }) => {
         setProgress(prev => {
           if (prev >= 100) {
             clearInterval(timer);
-            onVerify();
+            setTimeout(() => {
+              onVerify();
+            }, 0);
             return 100;
           }
           return prev + 2;
